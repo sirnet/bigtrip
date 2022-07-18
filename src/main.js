@@ -1,34 +1,39 @@
 import { createMenuTemplate } from "./view/menu";
-import { createRouteInfoTemplate } from "./view/route-info";
+import { createTripInfoTemplate } from "./view/trip-info";
+import { createTripCostTemplate } from "./view/trip-cost";
 import { createFilterTemplate } from "./view/filters";
 import { createTripBoardTemplate } from "./view/trip-board";
-import { createAddNewPoint } from "./view/add-new-point";
+import { createNewPointTemplate } from "./view/new-point";
 import { createEditPointTemplate } from "./view/edit-point";
 import { createWaypointTemplate } from "./view/waypoint";
 
+
 const COUNT_POINT = 3;
-const render = (container, template, place) => {
+const siteBodyElement = document.querySelector('.page-body');
+
+const render = (container, template, place = 'beforeend') => {
     container.insertAdjacentHTML(place, template);
 };
-
-const siteBodyElement = document.querySelector('.page-body');
-const tripRouteInfo = siteBodyElement.querySelector('.trip-main');
-
-render (tripRouteInfo, createRouteInfoTemplate(), 'afterbegin');
 
 const tripMenuElement = siteBodyElement.querySelector('.trip-controls__navigation');
 render (tripMenuElement, createMenuTemplate(), 'beforeend');
 
+const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
+render (tripDetalsElement, createTripInfoTemplate(), 'afterbegin');
+
+const tripCostElement = tripDetalsElement.querySelector('.trip-info');
+render (tripCostElement, createTripCostTemplate());
+
 const tripFilterElement = siteBodyElement.querySelector('.trip-controls__filters');
-render (tripFilterElement, createFilterTemplate(), 'beforeend');
+render (tripFilterElement, createFilterTemplate());
 
 const tripBordElement = siteBodyElement.querySelector('.trip-events');
-render (tripBordElement, createTripBoardTemplate(), 'beforeend');
+render (tripBordElement, createTripBoardTemplate());
 
 const tripListElement = tripBordElement.querySelector('.trip-events__list');
-render (tripListElement, createAddNewPoint(), 'beforeend');
-render (tripListElement, createEditPointTemplate(), 'beforeend');
+render (tripListElement, createNewPointTemplate());
+render (tripListElement, createEditPointTemplate());
 
 for (let i=0; i < COUNT_POINT; i++){
-    render (tripListElement, createWaypointTemplate(), 'beforeend');
+    render (tripListElement, createWaypointTemplate());
 };
