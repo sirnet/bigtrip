@@ -1,49 +1,16 @@
 import { getRandomInteger } from "./utils";
+import { OFFERS } from "./const";
 
-const possibleOffers = [
-    {
-        title: 'Rent a car',
-        price: '200',
-    },
-    {
-        title: 'Add luggage',
-        price: '30',
-    },
-    {
-        title: 'Switch to comfort',
-        price: '100',
-    },
-    {
-        title: 'Order Uber',
-        price: '20',
-    },
-    {
-        title: 'Add breakfast',
-        price: '50',
-    },
-    {
-        title: 'Add meal',
-        price: '15',
-    },
-    {
-        title: 'Choose seats',
-        price: '5',
-    },
-    {
-        title: 'Travel by train',
-        price: '40',
-    },
-];
 
 export const getOffersRandom = (vol) => {
     const array = [];
     for (let i = 0; i <= vol; i++){
-        array[i] = possibleOffers[getRandomInteger(1,10)];
+        array[i] = OFFERS[getRandomInteger(0,7)];
     };
 
     return array;
 };
 
 export const getDayGeneration = () => {
-    
+
 };
