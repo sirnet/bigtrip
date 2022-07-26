@@ -11,6 +11,5 @@ const generateRandomOffer = (type) => {
 };
 
 export const generateRandomOffers = (types) => {
-    console.log(generateRandomOffer(types));
     return types.map((type) => generateRandomOffer(type));
 };

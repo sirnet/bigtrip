@@ -13,7 +13,7 @@ import { generatePoinData } from "./mock/point-data-generator";
 const COUNT_POINT = 3;
 const siteBodyElement = document.querySelector('.page-body');
 
-const point = new Array(20).fill().map(() => generatePoinData());
+export const point = new Array(20).fill().map(() => generatePoinData());
 console.log(point);
 
 const render = (container, template, place = 'beforeend') => {
@@ -39,6 +39,6 @@ const tripListElement = tripBordElement.querySelector('.trip-events__list');
 render (tripListElement, createNewPointTemplate());
 render (tripListElement, createEditPointTemplate());
 
-for (let i=0; i < COUNT_POINT; i++){
-    render (tripListElement, createWaypointTemplate());
+for (let i = 0; i < point.length - 1; i++){
+    render (tripListElement, createWaypointTemplate(point[i]));
 };
