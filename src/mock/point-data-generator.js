@@ -1,35 +1,46 @@
-import { getRandomInteger } from "./utils";
-import { getOffersRandom } from "./offer-data-generator";
-import { TYPES, CITES, DESCRIPTION, DateFormat } from "./const";
+import { generateRandomArray, getRandomArrayElement, getRandomInteger, pickOffersDependOnType } from "./utils";
+import { generateRandomOffers } from "./offer-data-generator";
+import { TYPES, CITES, DESCRIPTION, SRC, PERIOD, GAP, OFFERS} from "./const";
+import dayjs from "dayjs";
 
-let id = 0;
 
-const getDescription = () => {
-    return [
-        {
-            "description": DESCRIPTION[getRandomInteger(0,4)],
-            "name": CITES[getRandomInteger(0,5)],
-            "pictures": [
-                {
-                    "src": "http://picsum.photos/248/152?r=" + Math.floor(Math.random()),
-                    "description": "Chamonix parliament building"
-                }
-            ]
-        }
-    ]
-};
 
-export const getPointArray = () => {
-    id += 1;
+const generatePicture = () => {src: SRC + Math.random()}; 
+
+const generateDescription = (cites, interval) => {
     return {
-        "base_price": getRandomInteger(1, 1500),
-        "date_from": "",
-        "date_to": "",
-        "destination": getDescription(),
-        "id" : id,
-        "is_favorite": Boolean(getRandomInteger(0,1)),
-        "offers" : getOffersRandom(getRandomInteger(0,1)),
-        "type": TYPES[getRandomInteger(0,8)]
+        name: getRandomArrayElement(cites),
+        description: generateRandomArray(DESCRIPTION, interval.MIN, interval.MAX).join(' '),
+        pictures: new Array(getRandomInteger(interval.MIN, interval.MAX)).fill(null).map(generatePicture),
     };
 };
 
+const createDataGenerator = () => {
+    let startDate = dayjs().add(getRandomInteger(PERIOD.START_DATE_MIN, PERIOD.START_DATE_MAX), 'd');
+    return () => {
+        const dateFrom = dayjs(startDate).add(getRandomInteger(PERIOD.DATE_FROM_MIN, PERIOD.DATE_FROM_MAX), 'm').toDate();
+        const dateTo = dayjs(dateFrom).add(getRandomInteger(PERIOD.DATE_TO_MIN, PERIOD.DATE_TO_MAX), 'm').toDate();
+        startDate = dateTo;
+        return {
+            dateFrom,
+            dateTo
+        };
+    };
+};
+
+const generateDate = createDataGenerator();
+
+export const generatePoinData = () => {
+    const type = getRandomArrayElement(TYPES);
+    const offers = generateRandomOffers(TYPES);
+    const dateInterval = generateDate();
+    return {
+        type,
+        offers: pickOffersDependOnType(type, offers),
+        description: generateDescription(CITES, GAP),
+        basePrice: getRandomInteger(PERIOD.BASE_PRICE_MIN, PERIOD.BASE_PRICE_MAX),
+        dateFrom: dateInterval.dateFrom,
+        dateTo: dateInterval.dateTo,
+        isFavorite: Boolean(getRandomInteger()),
+    };
+};

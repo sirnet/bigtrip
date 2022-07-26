@@ -52,4 +52,22 @@ const OFFERS = [
     },
 ];
 
-export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS};
+const GAP = {
+    MIN: 1,
+    MAX: 5
+};
+
+const PERIOD = {
+    START_DATE_MIN: -7,
+    START_DATE_MAX: -4,
+    DATE_FROM_MIN: 60,
+    DATE_FROM_MAX: 120,
+    DATE_TO_MIN: 180,
+    DATE_TO_MAX: 2880,
+    BASE_PRICE_MIN: 20,
+    BASE_PRICE_MAX: 1500,
+};
+
+const SRC = 'http://picsum.photos/248/152?r='
+
+export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS, GAP, PERIOD, SRC};

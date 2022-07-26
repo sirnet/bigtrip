@@ -7,13 +7,13 @@ import { createNewPointTemplate } from "./view/new-point";
 import { createEditPointTemplate } from "./view/edit-point";
 import { createWaypointTemplate } from "./view/waypoint";
 
-import { getPointArray } from "./mock/point-data-generator";
+import { generatePoinData } from "./mock/point-data-generator";
 
 
 const COUNT_POINT = 3;
 const siteBodyElement = document.querySelector('.page-body');
 
-const point = new Array(20).fill().map(() => getPointArray());
+const point = new Array(20).fill().map(() => generatePoinData());
 console.log(point);
 
 const render = (container, template, place = 'beforeend') => {

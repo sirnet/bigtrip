@@ -1,16 +1,16 @@
-import { getRandomInteger } from "./utils";
+import { generateRandomArray } from "./utils";
 import { OFFERS } from "./const";
 
+const MAX_OFFERS_NUMBER = 5;
 
-export const getOffersRandom = (vol) => {
-    const array = [];
-    for (let i = 0; i <= vol; i++){
-        array[i] = OFFERS[getRandomInteger(0,7)];
+const generateRandomOffer = (type) => {
+    return {
+        type,
+        offers: generateRandomArray(OFFERS, 0, MAX_OFFERS_NUMBER),
     };
-
-    return array;
 };
 
-export const getDayGeneration = () => {
-
+export const generateRandomOffers = (types) => {
+    console.log(generateRandomOffer(types));
+    return types.map((type) => generateRandomOffer(type));
 };
