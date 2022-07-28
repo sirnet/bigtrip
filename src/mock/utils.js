@@ -25,15 +25,7 @@ export const getRandomArrayElement = (array) => {
 /* Подумать как переделать */
 export const generateRandomArray = (array, minLength = 0, maxLength = array.length) => {
     let temp;
-    let j;
-    for (let i = array.length - 1; i > 0; i--) {
-        j = getRandomInteger(0, i);
-        temp = array[j];
-        array[j] = array[i];
-        array[i] = temp;
-    }
-    array.length = getRandomInteger(minLength, maxLength);
-    return array;
+    return array.slice(getRandomInteger(maxLength));
 };
 
 export const pickOffersDependOnType = (type, offers) => {
@@ -41,8 +33,9 @@ export const pickOffersDependOnType = (type, offers) => {
 };
 
 const dateConverter = {
-    'D MMM': (data) => dayjs(date).format('D MMM'),
+    'MMM D': (date) => dayjs(date).format('MMM D'),
     'HH:mm': (date) => dayjs(date).format('HH:mm'),
+    'YYYY-MM-DD': (date) => dayjs(date).format('YYYY-MM-DD'),
     'YYYY-MM-DDTHH:mm': (date) => dayjs(date).format('YYYY-MM-DDTHH:mm'),
     'DD/MM/YY HH:mm': (date) => dayjs(date).format('DD/MM/YY HH:mm'),
 };
@@ -53,14 +46,13 @@ export const compareTwoDates = (dateA, dateB) => dayjs(dateA).diff(dateB);
 
 export const getTimeDuration = (initialDate, expirationDate) => {
     const difference = compareTwoDates(expirationDate, initialDate);
-    const duration = dayjs.diff(difference);
-
+    const duration = dayjs.duration(difference,'hours').$d;
     const day = duration.days < DAYS_COUNT ? `0${duration.days}D` : `${duration.days}D`;
     const hour = duration.hours < DAYS_COUNT ? `0${duration.hours}H` : `${duration.hours}H`;
     const minute = duration.minutes < DAYS_COUNT ? `0${duration.minutes}M` : `${duration.minutes}M`;
     
     const total = (difference / TimeFormat.MILLISECOND_PER_MINUTE) > TimeFormat.MINUTES_PER_DAY ? `${day} ${hour} ${minute}` :
-    (difference / TimeFormat.MILLISECOND_PER_MINUTE) > TimeFormat.MINUTE_PER_HOUR ? `{hour} ${minute}` : minute;
+    (difference / TimeFormat.MILLISECOND_PER_MINUTE) > TimeFormat.MINUTE_PER_HOUR ? `${hour} ${minute}` : minute;
     
     return total;
 };
