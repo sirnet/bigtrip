@@ -46,8 +46,8 @@ export const compareTwoDates = (dateA, dateB) => dayjs(dateA).diff(dateB);
 
 export const getTimeDuration = (initialDate, expirationDate) => {
     const difference = compareTwoDates(expirationDate, initialDate);
-    const duration = dayjs.duration(difference,'hours').$d;
-    const day = duration.days < DAYS_COUNT ? `0${duration.days}D` : `${duration.days}D`;
+    const duration = dayjs.duration(dayjs(expirationDate).diff(initialDate)).$d;
+    const day = duration.day < DAYS_COUNT ? `0${duration.days}D` : `${duration.days}D`;
     const hour = duration.hours < DAYS_COUNT ? `0${duration.hours}H` : `${duration.hours}H`;
     const minute = duration.minutes < DAYS_COUNT ? `0${duration.minutes}M` : `${duration.minutes}M`;
     

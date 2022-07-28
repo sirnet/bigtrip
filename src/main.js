@@ -8,13 +8,14 @@ import { createEditPointTemplate } from "./view/edit-point";
 import { createWaypointTemplate } from "./view/waypoint";
 
 import { generatePoinData } from "./mock/point-data-generator";
+import { getRandomInteger } from "./mock/utils";
 
 
 const COUNT_POINT = 3;
 const siteBodyElement = document.querySelector('.page-body');
 
-export const point = new Array(20).fill().map(() => generatePoinData());
-console.log(point);
+const point = new Array(20).fill().map(() => generatePoinData());
+
 
 const render = (container, template, place = 'beforeend') => {
     container.insertAdjacentHTML(place, template);
@@ -36,7 +37,7 @@ const tripBordElement = siteBodyElement.querySelector('.trip-events');
 render (tripBordElement, createTripBoardTemplate());
 
 const tripListElement = tripBordElement.querySelector('.trip-events__list');
-render (tripListElement, createNewPointTemplate());
+render (tripListElement, createNewPointTemplate(point[getRandomInteger(0, point.length - 1)]));
 render (tripListElement, createEditPointTemplate());
 
 for (let i = 0; i < point.length - 1; i++){

@@ -27,11 +27,11 @@ export const createWaypointTemplate = (array) => {
         <h3 class="event__title">${type} ${description.name}</h3>
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T10:30">${getTimeDuration(dateFrom, dateTo)}</time>
+            <time class="event__start-time" datetime="${humanizeDate(dateFrom, 'YYYY-MM-DDTHH:mm')}">${humanizeDate(dateFrom)}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+            <time class="event__end-time" datetime="${humanizeDate(dateFrom, 'YYYY-MM-DDTHH:mm')}">${humanizeDate(dateTo)}</time>
           </p>
-          <p class="event__duration">30M</p>
+          <p class="event__duration">${getTimeDuration(dateFrom, dateTo)}</p>
         </div>
         <p class="event__price">
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
