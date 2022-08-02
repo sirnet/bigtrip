@@ -14,7 +14,7 @@ const createPointOfferTemplate = (offers) => {
 
 const createFavoritPointTemplate = (favorite) => {
   return favorite == true ? `event__favorite-btn--active` : ""; 
-}
+};
 
 export const createWaypointTemplate = (array) => {
   const {basePrice, dateFrom, dateTo, description, offers, type, isFavorite} = array;
