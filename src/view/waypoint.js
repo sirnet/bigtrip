@@ -1,5 +1,5 @@
 //Точка маршрута
-import { humanizeDate, getTimeDuration} from "../mock/utils";
+import { humanizeDate, getTimeDuration, createElement} from "../mock/utils";
 
 
 const createPointOfferTemplate = (offers) => {
@@ -52,3 +52,27 @@ export const createWaypointTemplate = (array) => {
       </div>
     </li>`;
 };
+
+export default class PointOfferTemplate {
+  constructor (point){
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createWaypointTemplate(this._point);
+  }
+
+  getElement() {
+    if(!this._element){
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+}
