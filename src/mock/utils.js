@@ -10,16 +10,12 @@ const TimeFormat = {
     MILLISECOND_PER_MINUTE: 60000,
 };
 
-const RenderPosition = {
+export const RenderPosition = {
     AFTERBEGIN : 'afterbegin',
     BEFOREEND: 'beforeend',
 };
 
-export const renderTemplate = (container, template, place = 'beforeend') => {
-    container.insertAdjacentHTML(place, template);
-};
-
-export const renderElement = (container, element, place = 'beforeend') => {
+export const renderElement = (container, element, place = RenderPosition.BEFOREEND) => {
     switch(place){
         case RenderPosition.AFTERBEGIN:
             container.prepend(element);
@@ -33,7 +29,7 @@ export const renderElement = (container, element, place = 'beforeend') => {
 export const createElement = (template) => {
     const newElement = document.createElement('div');
     newElement.innerHTML = template;
-    return newElement.firstChild;
+    return newElement.firstElementChild;
 };
 
 export const getRandomInteger = (a = 0, b = 1) => {

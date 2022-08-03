@@ -1,7 +1,7 @@
 //Создание формы
-import { humanizeDate } from "../mock/utils";
+import { createElement, humanizeDate } from "../mock/utils";
 
-export const createNewPointTemplate = (array) => {
+const createNewPointTemplate = (array) => {
   const {dateFrom, dateTo, description, offers, type} = array;
     return `<li class="trip-events__item">
     <form class="event event--edit" action="#" method="post">
@@ -171,3 +171,26 @@ export const createNewPointTemplate = (array) => {
     </form>
   </li>`;
 };
+
+export default class NewPointTemplate {
+  constructor(date) {
+    this._date = date;
+    this._elemnt = null;
+  }
+
+  getTemplate() {
+    return createNewPointTemplate(this._date);
+  }
+
+  getElement() {
+    if(!this._elemnt){
+      this._elemnt = createElement(this.getTemplate());
+    }
+
+    return this._elemnt;
+  }
+
+  removeElement(){
+    this._elemnt = null;
+  }
+}

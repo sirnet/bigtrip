@@ -1,6 +1,20 @@
 //Редактирование формы
+import dayjs from "dayjs";
+import { CITES, TYPES } from "../mock/const";
+import { createElement, getRandomArrayElement, humanizeDate } from "../mock/utils";
 
-import { humanizeDate } from "../mock/utils";
+const EMPTY_POINT = {
+  type: getRandomArrayElement(TYPES),
+  offers: [],
+  description: {
+    name: getRandomArrayElement(CITES),
+    description: '',
+    pictures: '',
+  },
+  dateFrom: dayjs(),
+  dateTo: dayjs(),
+  basePrice: '',
+};
 
 export const createEditPointTemplate = (array) => {
   const {dateFrom, dateTo, description, offers, type} = array;
@@ -108,7 +122,6 @@ export const createEditPointTemplate = (array) => {
       <section class="event__details">
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
           <div class="event__available-offers">
           <div class="event__offer-selector">
           <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
@@ -165,3 +178,27 @@ export const createEditPointTemplate = (array) => {
     </form>
   </li>`;
 };
+
+
+export default class EditPointTemplate {
+  constructor(date) {
+    this._date = date;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditPointTemplate(this._date);
+  }
+
+  getElement() {
+    if(!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

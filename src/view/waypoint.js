@@ -16,8 +16,9 @@ const createFavoritPointTemplate = (favorite) => {
   return favorite == true ? `event__favorite-btn--active` : ""; 
 };
 
-export const createWaypointTemplate = (array) => {
+const createWaypointTemplate = (array) => {
   const {basePrice, dateFrom, dateTo, description, offers, type, isFavorite} = array;
+  const favoriteClassName = isFavorite ? `event__favorite-btn--active` : "";
     return `<li class="trip-events__item">
       <div class="event">
         <time class="event__date" datetime="${humanizeDate(dateFrom, 'YYYY-MM-DD')}">${humanizeDate(dateFrom, 'MMM D')}</time>
@@ -40,7 +41,7 @@ export const createWaypointTemplate = (array) => {
         <ul class="event__selected-offers">
           ${createPointOfferTemplate(offers)}  
         </ul>
-        <button class="event__favorite-btn ${createFavoritPointTemplate(isFavorite)}" type="button">
+        <button class="event__favorite-btn ${favoriteClassName}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
             <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -54,13 +55,13 @@ export const createWaypointTemplate = (array) => {
 };
 
 export default class PointOfferTemplate {
-  constructor (point){
-    this._point = point;
+  constructor (date){
+    this.date = date;
     this._element = null;
   }
 
   getTemplate() {
-    return createWaypointTemplate(this._point);
+    return createWaypointTemplate(this.date);
   }
 
   getElement() {
