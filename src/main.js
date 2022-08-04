@@ -13,12 +13,27 @@ import { render, RenderPosition } from "./utils";
 import { generateFilterData } from "./mock/filter-data-generator";
 
 const COUNT_POINT = 5;
+const pointData = new Array(COUNT_POINT).fill(null).map(() => generatePoinData());
+const filterData = generateFilterData(pointData);
+console.log(pointData);
+
+const siteBodyElement = document.querySelector('.page-body');
+const tripMenuElement = siteBodyElement.querySelector('.trip-controls__navigation');
+const tripFilterElement = siteBodyElement.querySelector('.trip-controls__filters');
+const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
+const tripBordElement = siteBodyElement.querySelector('.trip-events');
+
+const tripCostElement = tripDetalsElement.querySelector('.trip-info');
+
+const MainMenuComponent = new MainMenu()
+render (tripMenuElement, MainMenuComponent.getElement());
+
+const FilterComponent = new Filter(filterData) 
+render (tripFilterElement, FilterComponent.getElement());
 
 const renderPoint = (tripListComponent, date) => {
     const pointComponent = new PointOfferTemplate(date);
     const pointEditComponent = new EditPointTemplate(date);
-
-    render(tripListComponent, pointComponent.getElement());
 
     const replaceEditToForm = () => {
         tripListComponent.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
@@ -28,55 +43,46 @@ const renderPoint = (tripListComponent, date) => {
         tripListComponent.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
     };
 
+    const onEscKeyDown = (evt) => {
+        if (evt.key === 'Escape' || evt.key === 'Esc') {
+          evt.preventDefault();
+          replaceFormToEdit();
+          document.removeEventListener('keydown', onEscKeyDown);
+        }
+      };
+
     pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
         replaceEditToForm();
+        document.addEventListener('keydown', onEscKeyDown);
     });
 
     pointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
         replaceFormToEdit();
+        document.addEventListener('keydown', onEscKeyDown);
     });
 
     pointEditComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
         evt.preventDefault();
         replaceFormToEdit();
+        document.addEventListener('keydown', onEscKeyDown);
     });
 
     render(tripListComponent, pointComponent.getElement());
 
 };
 
-const siteBodyElement = document.querySelector('.page-body');
-
-const pointData = new Array(COUNT_POINT).fill(null).map(() => generatePoinData());
-const filterData = generateFilterData(pointData);
-console.log(pointData);
-
-const MainMenuComponent = new MainMenu()
-const tripMenuElement = siteBodyElement.querySelector('.trip-controls__navigation');
-render (tripMenuElement, MainMenuComponent.getElement());
-
-const TripInfoComponent = new TripInfoTemplate(pointData)
-const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
-render (tripDetalsElement, TripInfoComponent.getElement(), 'afterbegin');
+// const TripInfoComponent = new TripInfoTemplate(pointData)
+// render (tripDetalsElement, TripInfoComponent.getElement(), 'afterbegin');
 
 const TripCostComponent = new TripCostTemplate(pointData);
-const tripCostElement = tripDetalsElement.querySelector('.trip-info');
 render (tripCostElement, TripCostComponent.getElement());
 
-const FilterComponent = new Filter(filterData) 
-const tripFilterElement = siteBodyElement.querySelector('.trip-controls__filters');
-render (tripFilterElement, FilterComponent.getElement());
-
 const tripBordComponent = new TripBoardTemplate();
-const tripBordElement = siteBodyElement.querySelector('.trip-events');
 render(tripBordElement, tripBordComponent.getElement());
 
 const tripListComponent = new PointList();
-render(tripBordElement, tripListComponent.getElement(), RenderPosition.BEFOREEND);
+render (tripBordElement, tripListComponent.getElement(), RenderPosition.BEFOREEND);
 
-//renderElement (tripListElement, new NewPointTemplate(pointData[getRandomInteger(0, pointData.length - 1)]).getElement());
-//const EditPointComponent = new EditPointTemplate(pointData[0])
-//renderElement (tripListComponent.getElement(), EditPointComponent.getElement());
 
 for (let i = 1; i < pointData.length; i++){
     renderPoint (tripListComponent.getElement(), pointData[i]);
