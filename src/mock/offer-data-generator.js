@@ -1,5 +1,5 @@
-import { generateRandomArray } from "./utils";
-import { OFFERS } from "./const";
+import { generateRandomArray } from "../utils";
+import { OFFERS } from "../const";
 
 const MAX_OFFERS_NUMBER = 5;
 

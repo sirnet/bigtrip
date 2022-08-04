@@ -68,6 +68,6 @@ const PERIOD = {
     BASE_PRICE_MAX: 1500,
 };
 
-const SRC = 'http://picsum.photos/248/152?r='
+const ADRESS = 'http://picsum.photos/248/152?r=';
 
-export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS, GAP, PERIOD, SRC};
+export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS, GAP, PERIOD, ADRESS};

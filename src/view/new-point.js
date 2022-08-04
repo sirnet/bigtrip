@@ -1,5 +1,5 @@
 //Создание формы
-import { createElement, humanizeDate } from "../mock/utils";
+import { createElement, humanizeDate } from "../utils";
 
 const createNewPointTemplate = (array) => {
   const {dateFrom, dateTo, description, offers, type} = array;

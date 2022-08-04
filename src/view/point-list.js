@@ -1,4 +1,4 @@
-import { createElement } from '../mock/utils';
+import { createElement } from '../utils';
 
 const createPointListTemplate = () =>{
     return `<ul class="trip-events__list"></ul>`;

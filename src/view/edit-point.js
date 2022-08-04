@@ -1,7 +1,7 @@
 //Редактирование формы
 import dayjs from "dayjs";
-import { CITES, TYPES } from "../mock/const";
-import { createElement, getRandomArrayElement, humanizeDate } from "../mock/utils";
+import { CITES, TYPES } from "../const";
+import { createElement, getRandomArrayElement, humanizeDate } from "../utils";
 
 const EMPTY_POINT = {
   type: getRandomArrayElement(TYPES),
@@ -14,6 +14,23 @@ const EMPTY_POINT = {
   dateFrom: dayjs(),
   dateTo: dayjs(),
   basePrice: '',
+};
+
+const eventType = (date, type) => {
+
+  return `${date.map((val) => {
+      return `<div class="event__type-item">
+      <input id="event-type-${val}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${val}" ${val === type ? 'checked' : ''}>
+      <label class="event__type-label  event__type-label--${val}" for="event-type-${val}-1">${val}</label>
+    </div>`;
+  }).join('')}`;
+};
+
+const optionDestination = (city, name) => {
+  return city.map((val) => {
+    return val != name ? `<option value="${val}"></option>` : '';
+  }).join('');
+  
 };
 
 export const createEditPointTemplate = (array) => {
@@ -31,56 +48,7 @@ export const createEditPointTemplate = (array) => {
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Event type</legend>
-
-              <div class="event__type-item">
-                <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-                <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-                <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-                <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-transport-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
-                <label class="event__type-label  event__type-label--transport" for="event-type-transport-1">Transport</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-                <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-                <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-                <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-                <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-              </div>
-
-              <div class="event__type-item">
-                <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-              </div>
+              ${eventType(TYPES, type)}
             </fieldset>
           </div>
         </div>
@@ -91,9 +59,7 @@ export const createEditPointTemplate = (array) => {
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${description.name}" list="destination-list-1">
           <datalist id="destination-list-1">
-            <option value="Amsterdam"></option>
-            <option value="Geneva"></option>
-            <option value="Chamonix"></option>
+            ${optionDestination(CITES, description.name)}
           </datalist>
         </div>
 
@@ -122,35 +88,38 @@ export const createEditPointTemplate = (array) => {
       <section class="event__details">
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-          ${offers.map(({title, price}) => `
+          
           <div class="event__available-offers">
+          ${offers.map(({title, price}) => `
             <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${index}" type="checkbox" name="event-offer-luggage" checked>
-              <label class="event__offer-label" for="event-offer-luggage-1">
+              <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-${title}" type="checkbox" name="event-offer-luggage" checked>
+              <label class="event__offer-label" for="event-offer-luggage-${title}">
               <span class="event__offer-title">${title}</span>
                &plus;&euro;&nbsp;
               <span class="event__offer-price">${price}</span>
               </label>
-            
-              
-            </div>
             </div>`
-          ).join('')}
-          
+            ).join('')}
+            </div>
         </section>
 
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
           <p class="event__destination-description">${description.description}</p>
+          <div class="event__photos-container">
+                      <div class="event__photos-tape">
+                      ${description.pictures.map((val) => `
+                      <img class="event__photo" src="${val}" alt="Event photo">`
+                      ).join('')} 
+                      </div>
         </section>
-      </section>
     </form>
   </li>`;
 };
 
 
 export default class EditPointTemplate {
-  constructor(date) {
+  constructor(date = EMPTY_POINT) {
     this._date = date;
     this._element = null;
   }

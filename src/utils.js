@@ -15,6 +15,13 @@ export const RenderPosition = {
     BEFOREEND: 'beforeend',
 };
 
+export const getRandomInteger = (a = 0, b = 1) => {
+    const lower = Math.ceil(Math.min(a, b));
+    const upper = Math.floor(Math.max(a, b));
+  
+    return Math.floor(lower + Math.random() * (upper - lower + 1));
+};
+
 export const render = (container, element, place = RenderPosition.BEFOREEND) => {
     switch(place){
         case RenderPosition.AFTERBEGIN:
@@ -32,21 +39,13 @@ export const createElement = (template) => {
     return newElement.firstElementChild;
 };
 
-export const getRandomInteger = (a = 0, b = 1) => {
-    const lower = Math.ceil(Math.min(a, b));
-    const upper = Math.floor(Math.max(a, b));
-  
-    return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
 export const getRandomArrayElement = (array) => {
     return array[(getRandomInteger(0, (array.length - 1)))];
 };
 
 
 /* Подумать как переделать */
-export const generateRandomArray = (array, minLength = 0, maxLength = array.length) => {
-    let temp;
+export const generateRandomArray = (array, maxLength = array.length) => {
     return array.slice(getRandomInteger(maxLength));
 };
 
@@ -68,7 +67,7 @@ export const compareTwoDates = (dateA, dateB) => dayjs(dateA).diff(dateB);
 
 export const getTimeDuration = (initialDate, expirationDate) => {
     const difference = compareTwoDates(expirationDate, initialDate);
-    const duration = dayjs.duration(dayjs(expirationDate).diff(initialDate)).$d;
+    const duration = dayjs.duration(difference).$d;
     const day = duration.day < DAYS_COUNT ? `0${duration.days}D` : `${duration.days}D`;
     const hour = duration.hours < DAYS_COUNT ? `0${duration.hours}H` : `${duration.hours}H`;
     const minute = duration.minutes < DAYS_COUNT ? `0${duration.minutes}M` : `${duration.minutes}M`;

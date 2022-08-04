@@ -1,5 +1,5 @@
 //Информация о маршруте
-import {createElement, humanizeDate} from '../mock/utils';
+import {createElement, humanizeDate} from '../utils';
 
 
 const createTripCityItemTemplate = (array) => {

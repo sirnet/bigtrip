@@ -1,11 +1,11 @@
 //Фильтр
 
-import { createElement } from "../mock/utils";
+import { createElement } from "../utils";
 
 const createFilterItemTemplate = (array) => {
   return array.map(({name, amount}) => {
     return `<div class="trip-filters__filter">
-    <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
+    <input id="filter-${name}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${amount}" checked>
     <label class="trip-filters__filter-label" for="filter-everything">${name} ${amount}</label>
   </div>`;
   }).join('');

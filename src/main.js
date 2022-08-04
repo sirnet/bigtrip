@@ -9,7 +9,7 @@ import PointOfferTemplate from "./view/waypoint";
 import PointList from "./view/point-list";
 
 import { generatePoinData } from "./mock/point-data-generator";
-import { render, RenderPosition } from "./mock/utils";
+import { render, RenderPosition } from "./utils";
 import { generateFilterData } from "./mock/filter-data-generator";
 
 const COUNT_POINT = 5;
@@ -22,11 +22,11 @@ const renderPoint = (tripListComponent, date) => {
 
     const replaceEditToForm = () => {
         tripListComponent.replaceChild(pointEditComponent.getElement(), pointComponent.getElement());
-    }
+    };
 
     const replaceFormToEdit = () => {
         tripListComponent.replaceChild(pointComponent.getElement(), pointEditComponent.getElement());
-    }
+    };
 
     pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
         replaceEditToForm();
@@ -41,7 +41,9 @@ const renderPoint = (tripListComponent, date) => {
         replaceFormToEdit();
     });
 
-}
+    render(tripListComponent, pointComponent.getElement());
+
+};
 
 const siteBodyElement = document.querySelector('.page-body');
 

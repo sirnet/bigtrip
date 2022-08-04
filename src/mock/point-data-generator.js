@@ -1,11 +1,11 @@
-import { generateRandomArray, getRandomArrayElement, getRandomInteger, pickOffersDependOnType } from "./utils";
+import { generateRandomArray, getRandomArrayElement, getRandomInteger, pickOffersDependOnType } from "../utils";
 import { generateRandomOffers } from "./offer-data-generator";
-import { TYPES, CITES, DESCRIPTION, SRC, PERIOD, GAP, OFFERS} from "./const";
+import { TYPES, CITES, DESCRIPTION, ADRESS, PERIOD, GAP, OFFERS} from "../const";
 import dayjs from "dayjs";
 
 
 
-const generatePicture = () => {src: SRC + Math.random()}; 
+const generatePicture = () => {return ADRESS + Math.random()}; 
 
 const generateDescription = (cites, interval) => {
     return {

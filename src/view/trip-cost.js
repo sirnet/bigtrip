@@ -1,4 +1,4 @@
-import { createElement } from "../mock/utils";
+import { createElement } from "../utils";
 
 //Стоимость
 let summ = 0;

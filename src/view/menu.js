@@ -1,6 +1,6 @@
 //Меню
 
-import { createElement } from "../mock/utils";
+import { createElement } from "../utils";
 
 export const createMenuTemplate = () => {
     return ` <nav class="trip-controls__trip-tabs  trip-tabs">
