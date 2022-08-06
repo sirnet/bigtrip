@@ -1,4 +1,5 @@
-import { createElement } from "../utils";
+
+import Abstract from "./abstract";
 
 //Стоимость
 let summ = 0;
@@ -16,25 +17,13 @@ const createTripCostTemplate = (array) => {
   </p>`;
 };
 
-export default class TripCostTemplate {
+export default class TripCostTemplate extends Abstract{
   constructor(date){
+    super()
     this._date = date;
-    this._element = null;
   }
 
   getTemplate() {
     return createTripCostTemplate(this._date);
-  }
-
-  getElement() {
-    if(!this._element){
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

@@ -1,7 +1,9 @@
 //Редактирование формы
 import dayjs from "dayjs";
 import { CITES, TYPES } from "../const";
-import { createElement, getRandomArrayElement, humanizeDate } from "../utils";
+import { getRandomArrayElement } from '../utils/common'
+import { humanizeDate } from '../utils/point'
+import AbstractViev from "./abstract";
 
 const EMPTY_POINT = {
   type: getRandomArrayElement(TYPES),
@@ -118,25 +120,36 @@ export const createEditPointTemplate = (array) => {
 };
 
 
-export default class EditPointTemplate {
+export default class EditPointTemplate extends AbstractViev {
   constructor(date = EMPTY_POINT) {
+    super();
     this._date = date;
-    this._element = null;
+    this._clickEditHandler = this._clickEditHandler.bind(this);
+    this._formSubmintHandler = this._formSubmintHandler.bind(this);
   }
 
   getTemplate() {
     return createEditPointTemplate(this._date);
   }
 
-  getElement() {
-    if(!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _clickEditHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 
-  removeElement() {
-    this._element = null;
+  _formSubmintHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
+
+  setClickEditHandler(callback){
+    this._callback.click = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickEditHandler);
+  }
+
+  setFormSubmintHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit',this._clickEditHandler);
+  }
+
 }

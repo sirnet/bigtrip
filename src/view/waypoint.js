@@ -1,6 +1,6 @@
 //Точка маршрута
-import { humanizeDate, getTimeDuration, createElement} from "../utils";
-
+import { humanizeDate, getTimeDuration } from "../utils/point";
+import Abstract from './abstract';
 
 const createPointOfferTemplate = (offers) => {
   return offers.length > 0 ? `${offers.map(({title, price}) => `
@@ -49,26 +49,24 @@ const createWaypointTemplate = (array) => {
     </li>`;
 };
 
-export default class PointOfferTemplate {
+export default class PointOfferTemplate extends Abstract{
   constructor (date){
+    super();
     this.date = date;
-    this._element = null;
+    this._clickPointHandler = this._clickPointHandler.bind(this);
   }
 
   getTemplate() {
     return createWaypointTemplate(this.date);
   }
 
-  getElement() {
-    if(!this._element){
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _clickPointHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 
-  removeElement() {
-    this._element = null;
+  setClickPointHandler(callback) {
+    this._callback.click = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickPointHandler)
   }
-
 }

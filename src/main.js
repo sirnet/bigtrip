@@ -9,8 +9,10 @@ import PointOfferTemplate from "./view/waypoint";
 import PointList from "./view/point-list";
 
 import { generatePoinData } from "./mock/point-data-generator";
-import { render, RenderPosition } from "./utils";
+import { RenderPosition } from "./utils/render";
+import { render } from "./utils/render";
 import { generateFilterData } from "./mock/filter-data-generator";
+import ListEmpty from "./view/list-empty";
 
 const COUNT_POINT = 5;
 const pointData = new Array(COUNT_POINT).fill(null).map(() => generatePoinData());
@@ -23,13 +25,13 @@ const tripFilterElement = siteBodyElement.querySelector('.trip-controls__filters
 const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
 const tripBordElement = siteBodyElement.querySelector('.trip-events');
 
-const tripCostElement = tripDetalsElement.querySelector('.trip-info');
+const MainMenuComponent = new MainMenu();
+render (tripMenuElement, MainMenuComponent);
 
-const MainMenuComponent = new MainMenu()
-render (tripMenuElement, MainMenuComponent.getElement());
+const FilterComponent = new Filter(filterData); 
+render (tripFilterElement, FilterComponent);
 
-const FilterComponent = new Filter(filterData) 
-render (tripFilterElement, FilterComponent.getElement());
+const tripInfoComponent = new TripInfoTemplate(pointData);
 
 const renderPoint = (tripListComponent, date) => {
     const pointComponent = new PointOfferTemplate(date);
@@ -51,18 +53,17 @@ const renderPoint = (tripListComponent, date) => {
         }
       };
 
-    pointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointComponent.setClickPointHandler(() => {
         replaceEditToForm();
         document.addEventListener('keydown', onEscKeyDown);
     });
 
-    pointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    pointEditComponent.setClickEditHandler(() => {
         replaceFormToEdit();
         document.addEventListener('keydown', onEscKeyDown);
     });
 
-    pointEditComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
-        evt.preventDefault();
+    pointEditComponent.setFormSubmintHandler(() => {
         replaceFormToEdit();
         document.addEventListener('keydown', onEscKeyDown);
     });
@@ -71,19 +72,24 @@ const renderPoint = (tripListComponent, date) => {
 
 };
 
-// const TripInfoComponent = new TripInfoTemplate(pointData)
-// render (tripDetalsElement, TripInfoComponent.getElement(), 'afterbegin');
+const renderBord = (pointData) => {
+    if(pointData.length === 0){
+        render(tripBordElement, new ListEmpty().getElement());
+        return;
+    }
 
-const TripCostComponent = new TripCostTemplate(pointData);
-render (tripCostElement, TripCostComponent.getElement());
-
-const tripBordComponent = new TripBoardTemplate();
-render(tripBordElement, tripBordComponent.getElement());
-
-const tripListComponent = new PointList();
-render (tripBordElement, tripListComponent.getElement(), RenderPosition.BEFOREEND);
-
-
-for (let i = 1; i < pointData.length; i++){
-    renderPoint (tripListComponent.getElement(), pointData[i]);
+    const TripCostComponent = new TripCostTemplate(pointData);
+    render (tripInfoComponent.getElement(), TripCostComponent.getElement());
+    
+    const tripBordComponent = new TripBoardTemplate();
+    render(tripBordElement, tripBordComponent.getElement());
+    
+    const tripListComponent = new PointList();
+    render (tripBordElement, tripListComponent.getElement(), RenderPosition.BEFOREEND);
+    
+    for (let i = 1; i < pointData.length; i++){
+        renderPoint (tripListComponent.getElement(), pointData[i]);
+    }
 };
+
+renderBord(pointData);

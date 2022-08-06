@@ -1,6 +1,6 @@
 //Сортировка
 
-import { createElement } from "../utils";
+import Abstract from "./abstract";
 
 const createTripBoardTemplate = () => {
     return `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
@@ -32,24 +32,8 @@ const createTripBoardTemplate = () => {
 };
 
 
-export default class TripBoardTemplate {
-  constructor(){
-    this._element = null;
-  }
-
+export default class TripBoardTemplate extends Abstract{
   getTemplate() {
     return createTripBoardTemplate();
-  }
-
-  getElement() {
-    if(!this._element){
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

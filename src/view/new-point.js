@@ -1,5 +1,6 @@
 //Создание формы
-import { createElement, humanizeDate } from "../utils";
+
+import Abstract from "./abstract";
 
 const createNewPointTemplate = (array) => {
   const {dateFrom, dateTo, description, offers, type} = array;
@@ -172,25 +173,15 @@ const createNewPointTemplate = (array) => {
   </li>`;
 };
 
-export default class NewPointTemplate {
+export default class NewPointTemplate extends Abstract{
   constructor(date) {
+    super();
     this._date = date;
-    this._elemnt = null;
+    
   }
 
   getTemplate() {
     return createNewPointTemplate(this._date);
   }
 
-  getElement() {
-    if(!this._elemnt){
-      this._elemnt = createElement(this.getTemplate());
-    }
-
-    return this._elemnt;
-  }
-
-  removeElement(){
-    this._elemnt = null;
-  }
 }

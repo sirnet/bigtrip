@@ -1,4 +1,5 @@
-import { generateRandomArray, getRandomArrayElement, getRandomInteger, pickOffersDependOnType } from "../utils";
+import { generateRandomArray, getRandomArrayElement, getRandomInteger } from "../utils/common";
+import { pickOffersDependOnType } from '../utils/point'
 import { generateRandomOffers } from "./offer-data-generator";
 import { TYPES, CITES, DESCRIPTION, ADRESS, PERIOD, GAP, OFFERS} from "../const";
 import dayjs from "dayjs";

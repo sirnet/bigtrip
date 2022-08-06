@@ -10,55 +10,16 @@ const TimeFormat = {
     MILLISECOND_PER_MINUTE: 60000,
 };
 
-export const RenderPosition = {
-    AFTERBEGIN : 'afterbegin',
-    BEFOREEND: 'beforeend',
-};
-
-export const getRandomInteger = (a = 0, b = 1) => {
-    const lower = Math.ceil(Math.min(a, b));
-    const upper = Math.floor(Math.max(a, b));
-  
-    return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-export const render = (container, element, place = RenderPosition.BEFOREEND) => {
-    switch(place){
-        case RenderPosition.AFTERBEGIN:
-            container.prepend(element);
-            break;
-        case RenderPosition.BEFOREEND:
-            container.append(element);
-            break;
-    }
-};
-
-export const createElement = (template) => {
-    const newElement = document.createElement('div');
-    newElement.innerHTML = template;
-    return newElement.firstElementChild;
-};
-
-export const getRandomArrayElement = (array) => {
-    return array[(getRandomInteger(0, (array.length - 1)))];
-};
-
-
-/* Подумать как переделать */
-export const generateRandomArray = (array, maxLength = array.length) => {
-    return array.slice(getRandomInteger(maxLength));
-};
-
-export const pickOffersDependOnType = (type, offers) => {
-    return offers.find((item) => item.type === type).offers;
-};
-
 const dateConverter = {
     'MMM D': (date) => dayjs(date).format('MMM D'),
     'HH:mm': (date) => dayjs(date).format('HH:mm'),
     'YYYY-MM-DD': (date) => dayjs(date).format('YYYY-MM-DD'),
     'YYYY-MM-DDTHH:mm': (date) => dayjs(date).format('YYYY-MM-DDTHH:mm'),
     'DD/MM/YY HH:mm': (date) => dayjs(date).format('DD/MM/YY HH:mm'),
+};
+
+export const pickOffersDependOnType = (type, offers) => {
+    return offers.find((item) => item.type === type).offers;
 };
 
 export const humanizeDate = (date, format = 'HH:mm') => dateConverter[format](date);
@@ -83,6 +44,3 @@ export const isDateInFuture = (date) => dayjs().isBefore(date, 'm');
 export const isDateCurrent = (date) => dayjs().isSame(date, 'm');
 
 export const isEventContinues = (dateFrom, dateTo) => isDateExpired(dateFrom) && isDateInFuture(dateTo);
-
-
-

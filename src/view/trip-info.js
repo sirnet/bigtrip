@@ -1,5 +1,6 @@
 //Информация о маршруте
-import {createElement, humanizeDate} from '../utils';
+import { humanizeDate} from '../utils/point';
+import Abstract from './abstract';
 
 
 const createTripCityItemTemplate = (array) => {
@@ -21,25 +22,14 @@ return `<section class="trip-main__trip-info  trip-info">
     </section>`;
 };
 
-export default class TripInfoTemplate  {
+export default class TripInfoTemplate  extends Abstract{
   constructor(date) {
+    super();
     this._date = date;
-    this._element = null;
+
   }
 
   getTemplate() {
     return createTripInfoTemplate(this._date);
-  }
-
-  getElement() {
-    if(!this._element){
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
