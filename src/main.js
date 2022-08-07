@@ -2,12 +2,12 @@ import MainMenu from "./view/menu";
 import TripInfoTemplate from "./view/trip-info";
 import TripCostTemplate from "./view/trip-cost";
 import Filter from "./view/filters";
-import TripBoardTemplate from "./view/trip-sort";
+import TripSortTemplate from "./view/trip-sort";
 import NewPointTemplate from "./view/new-point";
 import EditPointTemplate from "./view/edit-point";
 import PointOfferTemplate from "./view/waypoint";
 import PointList from "./view/point-list";
-
+import Point from "./presenter/point";
 import { generatePoinData } from "./mock/point-data-generator";
 import { RenderPosition } from "./utils/render";
 import { render } from "./utils/render";
@@ -22,7 +22,7 @@ console.log(pointData);
 const siteBodyElement = document.querySelector('.page-body');
 const tripMenuElement = siteBodyElement.querySelector('.trip-controls__navigation');
 const tripFilterElement = siteBodyElement.querySelector('.trip-controls__filters');
-const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
+//const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
 const tripBordElement = siteBodyElement.querySelector('.trip-events');
 
 const MainMenuComponent = new MainMenu();
@@ -81,8 +81,8 @@ const renderBord = (pointData) => {
     const TripCostComponent = new TripCostTemplate(pointData);
     render (tripInfoComponent.getElement(), TripCostComponent.getElement());
     
-    const tripBordComponent = new TripBoardTemplate();
-    render(tripBordElement, tripBordComponent.getElement());
+    const tripSortComponent = new TripSortTemplate();
+    render(tripBordElement, tripSortComponent.getElement());
     
     const tripListComponent = new PointList();
     render (tripBordElement, tripListComponent.getElement(), RenderPosition.BEFOREEND);
