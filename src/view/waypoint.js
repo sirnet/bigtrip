@@ -1,5 +1,6 @@
 //Точка маршрута
 import { humanizeDate, getTimeDuration } from "../utils/point";
+import { remove } from "../utils/render";
 import Abstract from './abstract';
 
 const createPointOfferTemplate = (offers) => {
@@ -52,12 +53,13 @@ const createWaypointTemplate = (array) => {
 export default class PointOfferTemplate extends Abstract{
   constructor (date){
     super();
-    this.date = date;
+    this._date = date;
     this._clickPointHandler = this._clickPointHandler.bind(this);
+    this._clickFavoriteHandler = this._clickFavoriteHandler.bind(this);
   }
 
   getTemplate() {
-    return createWaypointTemplate(this.date);
+    return createWaypointTemplate(this._date);
   }
 
   _clickPointHandler(evt) {
@@ -65,8 +67,20 @@ export default class PointOfferTemplate extends Abstract{
     this._callback.click();
   }
 
+  _clickFavoriteHandler() {
+    this._callback.favorite(this._date);
+    console.log(this._date.isFavorite);
+  }
+
   setClickPointHandler(callback) {
     this._callback.click = callback;
-    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickPointHandler)
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._clickPointHandler);
   }
+
+  setFavoriteClickHandler(callback){
+    this._callback.favorite = callback;
+    this.getElement().querySelector('.event__favorite-btn').addEventListener('click', this._clickFavoriteHandler);
+  }
+
+
 }

@@ -15,3 +15,6 @@ export const generateRandomArray = (array, maxLength = array.length) => {
     return array.slice(getRandomInteger(maxLength));
 };
 
+export const updateItem = (items, update) => {
+    return update;
+};

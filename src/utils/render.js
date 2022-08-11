@@ -30,22 +30,22 @@ export const createElement = (template) => {
     return newElement.firstElementChild;
 };
 
-export const replace = (newElement, currentElement) => {
-    if (currentElement instanceof Abstract) {
-        currentElement = currentElement.getElement();
+export const replace = (newChild, oldChild) => {
+    if (oldChild instanceof Abstract) {
+        oldChild = oldChild.getElement();
     }
 
-    if (newElement instanceof Abstract) {
-        newElement = newElement.getElement();
+    if (newChild instanceof Abstract) {
+        newChild = newChild.getElement();
     }
 
-    const parentElement = currentElement.parentElement;
+    const parent = oldChild.parentElement;
 
-    if(parentElement === null || currentElement === null || newElement === null) {
+    if(parent === null || oldChild === null || newChild === null) {
         throw new Error('one of the replaced elements does not exist');
     }
 
-    parentElement.replaceChild(newElement, createElement);
+    parent.replaceChild(newChild, oldChild);
 };
 
 export const remove = (component) => {
