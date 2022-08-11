@@ -2,6 +2,7 @@ import { generateRandomArray, getRandomArrayElement, getRandomInteger } from "..
 import { pickOffersDependOnType } from '../utils/point'
 import { generateRandomOffers } from "./offer-data-generator";
 import { TYPES, CITES, DESCRIPTION, ADRESS, PERIOD, GAP, OFFERS} from "../const";
+import { nanoid } from "nanoid";
 import dayjs from "dayjs";
 
 
@@ -36,6 +37,7 @@ export const generatePoinData = () => {
     const offers = generateRandomOffers(TYPES);
     const dateInterval = generateDate();
     return {
+        id: nanoid(),
         type,
         offers: pickOffersDependOnType(type, offers),
         description: generateDescription(CITES, GAP),

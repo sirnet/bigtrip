@@ -27,7 +27,7 @@ export default class Trip {
 
     _handlePointChange(updatePoint) {
         this._point = updateItem(this._pointData, updatePoint);
-        this._pointPresenter[updatePoint.isFavorite].init(updatePoint);
+        //this._pointPresenter[updatePoint.id].init(updatePoint);
     }
 
     _renderTrip() {
