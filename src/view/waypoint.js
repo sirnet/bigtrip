@@ -69,7 +69,6 @@ export default class PointOfferTemplate extends Abstract{
 
   _clickFavoriteHandler() {
     this._callback.favorite(this._date);
-    console.log(this._date.isFavorite);
   }
 
   setClickPointHandler(callback) {

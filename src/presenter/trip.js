@@ -19,7 +19,9 @@ export default class Trip {
         this._tripComponent = new PointList();
 
         this._handlePointChange = this._handlePointChange.bind(this);
+        // this._handlePointMode = this._handlePointMode.bind(this);
     }
+
     init(pointData) {
         this._pointData = pointData.slice();
         this._renderBord();
@@ -27,7 +29,7 @@ export default class Trip {
 
     _handlePointChange(updatePoint) {
         this._point = updateItem(this._pointData, updatePoint);
-        //this._pointPresenter[updatePoint.id].init(updatePoint);
+        this._pointPresenter[updatePoint.id].init(updatePoint);
     }
 
     _renderTrip() {
@@ -41,10 +43,11 @@ export default class Trip {
     _renderPoint(point) {
         const pointPresenter = new Point(this._tripComponent, this._handlePointChange);
         pointPresenter.init(point);
+        this._pointPresenter[point.id] = pointPresenter;
     }
 
     _renderPointList() {
-        this._renderPoints(0, Math.min(this._pointData.length, COUNT_POINT))
+        this._renderPoints(0, Math.min(this._pointData.length, COUNT_POINT));
     }
 
     _renderPoints(from, to) {
