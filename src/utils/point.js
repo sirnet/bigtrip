@@ -44,3 +44,11 @@ export const isDateInFuture = (date) => dayjs().isBefore(date, 'm');
 export const isDateCurrent = (date) => dayjs().isSame(date, 'm');
 
 export const isEventContinues = (dateFrom, dateTo) => isDateExpired(dateFrom) && isDateInFuture(dateTo);
+
+export const sortPointTime = (pointA, pointB) => {
+    return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+}
+
+export const sortPointPrice = (pointA, pointB) => {
+    return;
+}

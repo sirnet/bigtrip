@@ -8,9 +8,10 @@ const Mode = {
 }
 
 export default class Point {
-    constructor(listPointContainer, changeDate) {
+    constructor(listPointContainer, changeDate, changeMode) {
         this._listPointContainer = listPointContainer;
         this._changeDate = changeDate;
+        this._changeMode = changeMode;
 
         this._pointComponent = null;
         this._pointEditComponent = null;
@@ -38,33 +39,50 @@ export default class Point {
         this._pointEditComponent.setClickEditHandler(this._handleEditPoint);
         this._pointEditComponent.setFormSubmintHandler(this._handleFormSubmint);
 
+        
+
         if(previousPointComponent === null || previousPointEditorComponent === null){
             render(this._listPointContainer, this._pointComponent, RenderPosition.AFTERBEGIN);
-            
+            return;
         }
 
+        if(this._pointMode === Mode.POINT){
+            replace(this._pointComponent, previousPointComponent);
+        }
 
-        // remove(previousPointComponent);
-        // remove(previousPointEditorComponent);
+        if(this._pointMode === Mode.EDITOR){
+            replace(this._pointEditComponent, previousPointEditorComponent);
+        }
+
+        remove(previousPointComponent);
+        remove(previousPointEditorComponent);
         
     }
 
     destroy(){
-        //remove(this._pointComponent);
-        //remove(this._pointEditComponent);
+        remove(this._pointComponent);
+        remove(this._pointEditComponent);
     }
 
-
+    resetView() {
+        if(this._pointMode !== Mode.POINT){
+            this._replaceFormToEdit();
+        }
+    }
 
     _replaceEditToForm() {
         replace(this._pointEditComponent, this._pointComponent);
-        document.addEventListener('keydown', this._escKeyDownHandler);        
+        document.addEventListener('keydown', this._escKeyDownHandler);
+        this._changeMode();
+        this._pointMode = Mode.EDITOR;
+        
+               
     }
 
     _replaceFormToEdit() {
         replace(this._pointComponent, this._pointEditComponent);
-        document.addEventListener('keydown', this._escKeyDownHandler);
-        
+        document.removeEventListener('keydown', this._escKeyDownHandler);
+        this._pointMode = Mode.POINT;
     }
 
     _escKeyDownHandler(evt) {
@@ -82,7 +100,8 @@ export default class Point {
         this._replaceFormToEdit();
     }
 
-    _handleFormSubmint() {
+    _handleFormSubmint(point) {
+        this._changeDate(point);
         this._replaceFormToEdit();
     }
 
@@ -97,4 +116,5 @@ export default class Point {
             )
         );
     }
+
 }

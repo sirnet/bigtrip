@@ -70,4 +70,10 @@ const PERIOD = {
 
 const ADRESS = 'http://picsum.photos/248/152?r=';
 
-export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS, GAP, PERIOD, ADRESS};
+const SortType = {
+    DEFAULT : 'day',
+    PRICE: 'price',
+    TIME: 'time'
+};
+
+export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS, GAP, PERIOD, ADRESS, SortType};
