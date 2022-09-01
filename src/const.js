@@ -71,7 +71,7 @@ const PERIOD = {
 const ADRESS = 'http://picsum.photos/248/152?r=';
 
 const SortType = {
-    DEFAULT : 'day',
+    DAY : 'day',
     PRICE: 'price',
     TIME: 'time'
 };

@@ -45,10 +45,38 @@ export const isDateCurrent = (date) => dayjs().isSame(date, 'm');
 
 export const isEventContinues = (dateFrom, dateTo) => isDateExpired(dateFrom) && isDateInFuture(dateTo);
 
-export const sortPointTime = (pointA, pointB) => {
-    return dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
-}
+export const sortPointTime = (valueA, valueB) => {
+    const durationPointA = compareTwoDates(valueA.dateTo, valueA.dateFrom);
+    const durationPointB = compareTwoDates(valueB.dateTo, valueB.dateFrom);
 
-export const sortPointPrice = (pointA, pointB) => {
-    return;
-}
+    const sortWeightForTime = getSortWeightForEmpty(durationPointA, durationPointB);
+    if(sortWeightForTime !== null) {
+        return sortWeightForTime;
+    }
+    return durationPointB - durationPointA;
+};
+
+
+const getSortWeightForEmpty = (valueA, valueB) => {
+    if(valueA === null){
+        return 1;
+    }
+
+    if(valueB === null){
+        return -1;
+    }
+    if(valueA === null || valueB === null) {
+        return 0;
+    }
+
+    return null;
+};
+
+export const sortPointPrice = (valueA, valueB) => {
+    const sortWeightForEmpty = getSortWeightForEmpty(valueA.basePrice, valueB.basePrice);
+    if(sortWeightForEmpty !== null) {
+        return sortWeightForEmpty;
+    }
+
+    return valueB.basePrice - valueA.basePrice;
+};

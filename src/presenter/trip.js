@@ -4,7 +4,7 @@ import PointList from "../view/point-list";
 import TripInfoTemplate from "../view/trip-info";
 import TripSortTemplate from "../view/trip-sort";
 import { updateItem } from "../utils/common";
-import { sortPointPrice, sortPointTime } from "../utils/point"
+import { sortPointPrice, sortPointTime } from "../utils/point";
 import Point from "./point";
 import { SortType } from "../const";
 
@@ -94,14 +94,17 @@ export default class Trip {
 
     _sortPoints(sortType) {
         switch (sortType) {
+            case SortType.DAY:
+                this._pointData = this._sourcedBordPoint.slice();
+                break;
             case SortType.PRICE:
-                this._pointData.sort(sortPointPrice)
+                this._pointData.sort(sortPointPrice);
                 break;
             case SortType.TIME:
-                this._pointData.sort(sortPointTime)
+                this._pointData.sort(sortPointTime);
                 break;
             default:
-                this._pointData = this._sourcedBordPoint.slice();
+                throw new Error('Error by sort');
         }
 
         this._currentSortType = sortType;
