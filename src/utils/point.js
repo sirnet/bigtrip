@@ -18,8 +18,11 @@ const dateConverter = {
     'DD/MM/YY HH:mm': (date) => dayjs(date).format('DD/MM/YY HH:mm'),
 };
 
-export const pickOffersDependOnType = (type, offers) => {
-    return offers.find((item) => item.type === type).offers;
+export const pickOffersDependOnType = (type, elements, descriptionFlag) => {
+    if(descriptionFlag) {
+        return elements.find((item) => item.name === type);
+    }
+    return elements.find((item) => item.type === type).offers;
 };
 
 export const humanizeDate = (date, format = 'HH:mm') => dateConverter[format](date);

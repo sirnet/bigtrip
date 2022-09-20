@@ -20,7 +20,7 @@ export default class Point {
         this._handleClickPoint = this._handleClickPoint.bind(this);
         this._handleEditPoint = this._handleEditPoint.bind(this);
         this._handleFormSubmint = this._handleFormSubmint.bind(this);   
-        this._escKeyDownHandler = this._escKeyDownHandler.bind(this); 
+        this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
         this._handleFavoritePoint = this._handleFavoritePoint.bind(this);
         
    }
@@ -36,9 +36,9 @@ export default class Point {
 
         this._pointComponent.setClickPointHandler(this._handleClickPoint);
         this._pointComponent.setFavoriteClickHandler(this._handleFavoritePoint);
-        this._pointEditComponent.setClickEditHandler(this._handleEditPoint);
-        this._pointEditComponent.setFormSubmintHandler(this._handleFormSubmint);
-
+        this._pointEditComponent.setClickEditHandler(this._handleFormSubmint);
+        this._pointEditComponent.setFormSubmintHandler(this._handleEditPoint);
+        
         
 
         if(previousPointComponent === null || previousPointEditorComponent === null){
@@ -80,6 +80,7 @@ export default class Point {
     }
 
     _replaceFormToEdit() {
+        this._pointEditComponent.resetInput(this._point);
         replace(this._pointComponent, this._pointEditComponent);
         document.removeEventListener('keydown', this._escKeyDownHandler);
         this._pointMode = Mode.POINT;
@@ -101,8 +102,9 @@ export default class Point {
     }
 
     _handleFormSubmint(point) {
-        this._changeDate(point);
         this._replaceFormToEdit();
+        this._changeDate(point);
+       
     }
 
     _handleFavoritePoint() {

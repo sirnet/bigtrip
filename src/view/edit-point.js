@@ -2,8 +2,9 @@
 import dayjs from "dayjs";
 import { CITES, TYPES } from "../const";
 import { getRandomArrayElement } from '../utils/common'
-import { humanizeDate } from '../utils/point'
-import AbstractViev from "./abstract";
+import { humanizeDate, pickOffersDependOnType } from '../utils/point'
+import { generatedDescription, generateOffers } from '../mock/point-data-generator';
+import SmartView from "./smart";
 
 const EMPTY_POINT = {
   type: getRandomArrayElement(TYPES),
@@ -19,7 +20,6 @@ const EMPTY_POINT = {
 };
 
 const eventType = (date, type) => {
-
   return `${date.map((val) => {
       return `<div class="event__type-item">
       <input id="event-type-${val}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${val}" ${val === type ? 'checked' : ''}>
@@ -120,12 +120,29 @@ export const createEditPointTemplate = (array) => {
 };
 
 
-export default class EditPointTemplate extends AbstractViev {
+export default class EditPointTemplate extends SmartView {
   constructor(date = EMPTY_POINT) {
     super();
-    this._date = date;
+    this._date = EditPointTemplate.parseDataToState(date);
     this._clickEditHandler = this._clickEditHandler.bind(this);
     this._formSubmintHandler = this._formSubmintHandler.bind(this);
+    this._onPointTypeChange = this._onPointTypeChange.bind(this);
+    this._onPointInput = this._onPointInput.bind(this);
+    this._setInnerLesteners();
+  }
+
+  static parseDataToState(date) {
+    return Object.assign(
+      {},
+      date,
+    );
+  }
+
+  static parseStateToDate(state) {
+    return Object.assign(
+      {},
+      state,
+    );
   }
 
   getTemplate() {
@@ -134,7 +151,7 @@ export default class EditPointTemplate extends AbstractViev {
 
   _clickEditHandler(evt) {
     evt.preventDefault();
-    this._callback.click();
+    this._callback.click(EditPointTemplate.parseStateToDate(this._date));
   }
 
   _formSubmintHandler(evt) {
@@ -150,6 +167,47 @@ export default class EditPointTemplate extends AbstractViev {
   setFormSubmintHandler(callback) {
     this._callback.formSubmit = callback;
     this.getElement().querySelector('form').addEventListener('submit',this._clickEditHandler);
+  }
+
+  resetInput(date) {
+    this.updateData(EditPointTemplate.parseDataToState(date));
+  }
+
+  restoreListeners() {
+    this._setInnerLesteners();
+    this.setClickEditHandler(this._callback.click);
+    this.setFormSubmintHandler(this._callback.formSubmit);
+  }
+
+  _setInnerLesteners() {
+    this.getElement().querySelector('.event__type-group').addEventListener('change', this._onPointTypeChange);
+    this.getElement().querySelector('.event__input--destination').addEventListener('change', this._onPointInput);
+  }
+
+  _onRollUpClick() {
+    this._callback.rollUpClick();
+  }
+
+  _onPointTypeChange(evt){
+    evt.preventDefault();
+    if(evt.target.tagName !== 'INPUT'){
+      return;
+    }
+    this.updateData({
+      type: evt.target.value,
+      offers:  pickOffersDependOnType(evt.target.value, generateOffers) 
+    });
+  }
+
+  _onPointInput(evt) {
+    if(!CITES.includes(evt.target.value)){
+      return;
+    }
+
+    evt.preventDefault();
+    this.updateData({
+      description: pickOffersDependOnType(evt.target.value, generatedDescription, true)
+    });
   }
 
 }
