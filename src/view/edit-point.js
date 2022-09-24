@@ -5,6 +5,12 @@ import { getRandomArrayElement } from '../utils/common'
 import { humanizeDate, pickOffersDependOnType } from '../utils/point'
 import { generatedDescription, generateOffers } from '../mock/point-data-generator';
 import SmartView from "./smart";
+<<<<<<< HEAD
+=======
+import flatpickr from "flatpickr";
+
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
+>>>>>>> 5ed7ac2 (Задание 7)
 
 const EMPTY_POINT = {
   type: getRandomArrayElement(TYPES),
@@ -124,11 +130,23 @@ export default class EditPointTemplate extends SmartView {
   constructor(date = EMPTY_POINT) {
     super();
     this._date = EditPointTemplate.parseDataToState(date);
+<<<<<<< HEAD
+=======
+    this._datepicker = null;
+
+>>>>>>> 5ed7ac2 (Задание 7)
     this._clickEditHandler = this._clickEditHandler.bind(this);
     this._formSubmintHandler = this._formSubmintHandler.bind(this);
     this._onPointTypeChange = this._onPointTypeChange.bind(this);
     this._onPointInput = this._onPointInput.bind(this);
+<<<<<<< HEAD
     this._setInnerLesteners();
+=======
+    this._dueDateStartChangeHandler = this._dueDateStartChangeHandler.bind(this);
+    this._dueDateEndChangeHandler = this._dueDateEndChangeHandler.bind(this);
+    this._setInnerLesteners();
+    this._setDataStartpicker();
+>>>>>>> 5ed7ac2 (Задание 7)
   }
 
   static parseDataToState(date) {
@@ -175,6 +193,10 @@ export default class EditPointTemplate extends SmartView {
 
   restoreListeners() {
     this._setInnerLesteners();
+<<<<<<< HEAD
+=======
+    this._setDatepicker();
+>>>>>>> 5ed7ac2 (Задание 7)
     this.setClickEditHandler(this._callback.click);
     this.setFormSubmintHandler(this._callback.formSubmit);
   }
@@ -210,4 +232,37 @@ export default class EditPointTemplate extends SmartView {
     });
   }
 
+<<<<<<< HEAD
+=======
+  _setDataStartpicker(){
+    if(this._datepicker){
+      this._datepicker.destroy();
+      this._datepicker = null;
+    }
+
+    
+      this._datepicker = flatpickr(
+        this.getElement().getElementById("event-start-time-1"),
+        {
+          dateFormat: 'j F',
+          defaultDate: this._date.dateFrom,
+          onChange: this._dueDateStartChangeHandler,
+        },
+      );
+    
+  }
+
+  _dueDateStartChangeHandler() {
+    this.updateData({
+
+    });
+  }
+
+  _dueDateEndChangeHandler() {
+    this.updateData({
+
+    });
+  }
+
+>>>>>>> 5ed7ac2 (Задание 7)
 }
