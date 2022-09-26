@@ -5,12 +5,9 @@ import { getRandomArrayElement } from '../utils/common'
 import { humanizeDate, pickOffersDependOnType } from '../utils/point'
 import { generatedDescription, generateOffers } from '../mock/point-data-generator';
 import SmartView from "./smart";
-<<<<<<< HEAD
-=======
 import flatpickr from "flatpickr";
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
->>>>>>> 5ed7ac2 (Задание 7)
 
 const EMPTY_POINT = {
   type: getRandomArrayElement(TYPES),
@@ -130,23 +127,18 @@ export default class EditPointTemplate extends SmartView {
   constructor(date = EMPTY_POINT) {
     super();
     this._date = EditPointTemplate.parseDataToState(date);
-<<<<<<< HEAD
-=======
-    this._datepicker = null;
+    this._dateStartpicker = null;
+    this._dateEndpicker = null;
 
->>>>>>> 5ed7ac2 (Задание 7)
     this._clickEditHandler = this._clickEditHandler.bind(this);
     this._formSubmintHandler = this._formSubmintHandler.bind(this);
     this._onPointTypeChange = this._onPointTypeChange.bind(this);
     this._onPointInput = this._onPointInput.bind(this);
-<<<<<<< HEAD
-    this._setInnerLesteners();
-=======
     this._dueDateStartChangeHandler = this._dueDateStartChangeHandler.bind(this);
     this._dueDateEndChangeHandler = this._dueDateEndChangeHandler.bind(this);
     this._setInnerLesteners();
     this._setDataStartpicker();
->>>>>>> 5ed7ac2 (Задание 7)
+    this._setDataEndpicker();
   }
 
   static parseDataToState(date) {
@@ -193,10 +185,8 @@ export default class EditPointTemplate extends SmartView {
 
   restoreListeners() {
     this._setInnerLesteners();
-<<<<<<< HEAD
-=======
-    this._setDatepicker();
->>>>>>> 5ed7ac2 (Задание 7)
+    this._setDataStartpicker();
+    this._setDataEndpicker();
     this.setClickEditHandler(this._callback.click);
     this.setFormSubmintHandler(this._callback.formSubmit);
   }
@@ -232,19 +222,19 @@ export default class EditPointTemplate extends SmartView {
     });
   }
 
-<<<<<<< HEAD
-=======
   _setDataStartpicker(){
-    if(this._datepicker){
-      this._datepicker.destroy();
-      this._datepicker = null;
+    if(this._dateStartpicker){
+      this._dateStartpicker.destroy();
+      this._dateStartpicker = null;
     }
 
     
-      this._datepicker = flatpickr(
-        this.getElement().getElementById("event-start-time-1"),
+      this._dateStartpicker = flatpickr(
+        this.getElement().querySelector('#event-start-time-1'),
         {
-          dateFormat: 'j F',
+          enableTime: true,
+          time_24hr: true,
+          dateFormat: 'd/m/Y H:i',
           defaultDate: this._date.dateFrom,
           onChange: this._dueDateStartChangeHandler,
         },
@@ -252,17 +242,36 @@ export default class EditPointTemplate extends SmartView {
     
   }
 
-  _dueDateStartChangeHandler() {
-    this.updateData({
+  _setDataEndpicker(){
+    if(this._dateEndpicker){
+      this._dateEndpicker.destroy();
+      this._dateEndpicker = null;
+    }
 
+    
+      this._dateEndpicker = flatpickr(
+        this.getElement().querySelector('#event-end-time-1'),
+        {
+          enableTime: true,
+          time_24hr: true,
+          dateFormat: 'd/m/Y H:i',
+          defaultDate: this._date.dateTo,
+          onChange: this._dueDateEndChangeHandler,
+        },
+      );
+    
+  }
+
+  _dueDateStartChangeHandler([userDate]) {
+    this.updateData({
+      dateFrom : userDate,
     });
   }
 
-  _dueDateEndChangeHandler() {
+  _dueDateEndChangeHandler([userDate]) {
     this.updateData({
-
+      dateTo : userDate,
     });
   }
 
->>>>>>> 5ed7ac2 (Задание 7)
 }
