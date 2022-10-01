@@ -49,7 +49,7 @@ export default class TripBoardTemplate extends Abstract{
     }
 
     evt.preventDefault();
-    this._callback.sortTypeCange(evt.target.dataset.sortType);
+    this._callback.sortTypeCange(evt.target.value);
   }
 
   setSortClickHandler(callback) {

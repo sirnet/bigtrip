@@ -7,17 +7,20 @@ import { RenderPosition } from "./utils/render";
 import { render } from "./utils/render";
 import { generateFilterData } from "./mock/filter-data-generator";
 import TripPresenter from "./presenter/trip";
+import PointsModel from './model/points';
 
 const COUNT_POINT = 5;
 const pointData = new Array(COUNT_POINT).fill(null).map(() => generatePoinData());
 const filterData = generateFilterData(pointData);
-console.log(pointData);
 
 const siteBodyElement = document.querySelector('.page-body');
 const tripMenuElement = siteBodyElement.querySelector('.trip-controls__navigation');
 const tripFilterElement = siteBodyElement.querySelector('.trip-controls__filters');
 const tripDetalsElement = siteBodyElement.querySelector('.trip-main');
 const tripBordElement = siteBodyElement.querySelector('.trip-events');
+
+const pointsModel = new PointsModel();
+pointsModel.setPoints(pointData);
 
 const MainMenuComponent = new MainMenu();
 render (tripMenuElement, MainMenuComponent);
@@ -31,6 +34,6 @@ render (tripDetalsElement, tripInfoComponent, RenderPosition.AFTERBEGIN);
 const TripCostComponent = new TripCostTemplate(pointData);
 render (tripInfoComponent.getElement(), TripCostComponent.getElement());
 
-const tripPresenter = new TripPresenter(tripBordElement);
+const tripPresenter = new TripPresenter(tripBordElement, pointsModel);
 
-tripPresenter.init(pointData);
+tripPresenter.init();

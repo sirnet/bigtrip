@@ -71,9 +71,9 @@ const PERIOD = {
 const ADRESS = 'http://picsum.photos/248/152?r=';
 
 const SortType = {
-    DAY : 'day',
-    PRICE: 'price',
-    TIME: 'time'
+    DAY : 'sort-day',
+    PRICE: 'sort-price',
+    TIME: 'sort-time'
 };
 
 export {TYPES, CITES, DESCRIPTION, DateFormat, OFFERS, GAP, PERIOD, ADRESS, SortType};

@@ -11,7 +11,8 @@ import { SortType } from "../const";
 const COUNT_POINT = 5;
 
 export default class Trip {
-    constructor(boardContainer) {
+    constructor(boardContainer, pointsModel) {
+        this._pointsModel = pointsModel;
         this._boardContainer = boardContainer;
         this._renderedPointCount = COUNT_POINT;
         this._pointPresenter = {};
@@ -28,14 +29,16 @@ export default class Trip {
         this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     }
 
-    init(pointData) {
-        this._pointData = pointData.slice();
-        this._sourcedBordPoint = pointData.slice();
+    init() {
         this._renderBord();
     }
 
+    _getPoints() {
+        return this._pointsModel.getPoints();
+    }
+
     _handlePointChange(updatePoint) {
-        this._point = updateItem(this._pointData, updatePoint);
+        this._point = updateItem(this._getPoints(), updatePoint);
         this._sourcedBordPoint = updateItem(this._sourcedBordPoint, updatePoint);
         this._pointPresenter[updatePoint.id].init(updatePoint);
     }
@@ -70,13 +73,13 @@ export default class Trip {
     }
 
     _renderPointList() {
-        this._renderPoints(0, Math.min(this._pointData.length, COUNT_POINT));
+        const pointCount = this._getPoints().length;
+        const points = this._getPoints().slice(0, Math.min(pointCount, COUNT_POINT)) 
+        this._renderPoints(points);
     }
 
-    _renderPoints(from, to) {
-        this._pointData
-        .slice(from, to)
-        .forEach((pointData) => this._renderPoint(pointData));
+    _renderPoints(points) {
+        points.forEach((point) => this._renderPoint(point));
     }
 
     _renderNoPoint() {
@@ -84,8 +87,8 @@ export default class Trip {
     }
 
     _renderBord() {
-        if(this._pointData.length === 0){
-            return _renderNoPoint();
+        if(this._getPoints().every((point) => point.length === 0)){
+            return this._renderNoPoint();
         }
         this._renderSort();
         this._renderTrip();
@@ -95,13 +98,13 @@ export default class Trip {
     _sortPoints(sortType) {
         switch (sortType) {
             case SortType.DAY:
-                this._pointData = this._sourcedBordPoint.slice();
+                this._getPoints().sort(sortPointTime);
                 break;
             case SortType.PRICE:
-                this._pointData.sort(sortPointPrice);
+                this._getPoints().sort(sortPointPrice);
                 break;
             case SortType.TIME:
-                this._pointData.sort(sortPointTime);
+                this._getPoints().sort(sortPointTime);
                 break;
             default:
                 throw new Error('Error by sort');
