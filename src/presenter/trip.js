@@ -37,9 +37,13 @@ export default class Trip {
         return this._pointsModel.getPoints();
     }
 
+    updatePoint(updateType, update) {
+        const index = this._points.findIndex((point) => point.id === update.id);
+    }
+
     _handlePointChange(updatePoint) {
         this._point = updateItem(this._getPoints(), updatePoint);
-        this._sourcedBordPoint = updateItem(this._sourcedBordPoint, updatePoint);
+        //this._sourcedBordPoint = updateItem(this._sourcedBordPoint, updatePoint);
         this._pointPresenter[updatePoint.id].init(updatePoint);
     }
 
