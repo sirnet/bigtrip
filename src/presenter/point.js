@@ -1,6 +1,7 @@
 import { remove, render, RenderPosition, replace } from "../utils/render";
 import EditPointTemplate from "../view/edit-point";
 import PointOfferTemplate from "../view/waypoint";
+import { UserAction, UpdateType } from "../const";
 
 const Mode = {
     POINT: 'point',
@@ -17,11 +18,13 @@ export default class Point {
         this._pointEditComponent = null;
         this._pointMode = Mode.POINT;
 
+        
         this._handleClickPoint = this._handleClickPoint.bind(this);
         this._handleEditPoint = this._handleEditPoint.bind(this);
         this._handleFormSubmint = this._handleFormSubmint.bind(this);   
         this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
         this._handleFavoritePoint = this._handleFavoritePoint.bind(this);
+        
         
    }
 
@@ -102,13 +105,18 @@ export default class Point {
     }
 
     _handleFormSubmint(point) {
+        this._changeDate(
+            UserAction.UPDATE_POINT,
+            UpdateType.MINOR,
+            point,
+        );
         this._replaceFormToEdit();
-        this._changeDate(point);
-       
     }
 
     _handleFavoritePoint() {
         this._changeDate(
+            UserAction.UPDATE_POINT,
+            UpdateType.MINOR,
             Object.assign(
                 {},
                 this._point,

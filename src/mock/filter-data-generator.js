@@ -1,4 +1,5 @@
 import { isDateCurrent, isDateExpired, isDateInFuture, isEventContinues } from '../utils/point';
+import { TYPES } from '../const';
 
 const pointToFilterMap = {
     everything: (points) => points.length,

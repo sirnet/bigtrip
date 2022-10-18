@@ -6,7 +6,7 @@ import TripSortTemplate from "../view/trip-sort";
 import { updateItem } from "../utils/common";
 import { sortPointPrice, sortPointTime } from "../utils/point";
 import Point from "./point";
-import { SortType } from "../const";
+import { SortType, UpdateType, UserAction } from "../const";
 
 const COUNT_POINT = 5;
 
@@ -23,10 +23,12 @@ export default class Trip {
         this._infoComponent = new TripInfoTemplate();
         this._tripComponent = new PointList();
 
-        this._handlePointChange = this._handlePointChange.bind(this);
+        this._handleModelEvent = this._handleModelEvent.bind(this);
+        this._handleViewAction = this._handleViewAction.bind(this);
         this._handlePointMode = this._handlePointMode.bind(this);
 
         this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+        this._pointsModel.addObserver(this._handleModelEvent);
     }
 
     init() {
@@ -37,14 +39,22 @@ export default class Trip {
         return this._pointsModel.getPoints();
     }
 
-    updatePoint(updateType, update) {
-        const index = this._points.findIndex((point) => point.id === update.id);
+    _handleViewAction(actionType, updateType, update){
+        switch (actionType) {
+            case UserAction.UPDATE_POINT:
+                this._pointsModel.updatePoint(updateType, update);
+                break;
+            case UserAction.ADD_POINT:
+                this._pointsModel.addPoin(updateType, update);
+                break;
+            case UserAction.DELETE_POINT:
+                this._pointsModel.deletePoint(updateType, update);
+                break;
+        }
     }
 
-    _handlePointChange(updatePoint) {
-        this._point = updateItem(this._getPoints(), updatePoint);
-        //this._sourcedBordPoint = updateItem(this._sourcedBordPoint, updatePoint);
-        this._pointPresenter[updatePoint.id].init(updatePoint);
+    _handleModelEvent(updateType, data) {
+        console.log(updateType, data);
     }
 
     _handlePointMode(){
@@ -63,7 +73,7 @@ export default class Trip {
     }
 
     _renderPoint(point) {
-        const pointPresenter = new Point(this._tripComponent, this._handlePointChange, this._handlePointMode);
+        const pointPresenter = new Point(this._tripComponent, this._handleViewAction, this._handlePointMode);
         pointPresenter.init(point);
         this._pointPresenter[point.id] = pointPresenter;
     }
