@@ -1,4 +1,4 @@
-import { render } from "../utils/render";
+import { remove, render } from "../utils/render";
 import ListEmpty from "../view/list-empty";
 import PointList from "../view/point-list";
 import TripInfoTemplate from "../view/trip-info";
@@ -17,8 +17,8 @@ export default class Trip {
         this._renderedPointCount = COUNT_POINT;
         this._pointPresenter = {};
         this._currentSortType = SortType.DEFAULT;
+        this._sortComponent = null;
 
-        this._sortComponent = new TripSortTemplate();
         this._noListEmpty = new ListEmpty();
         this._infoComponent = new TripInfoTemplate();
         this._tripComponent = new PointList();
@@ -54,7 +54,21 @@ export default class Trip {
     }
 
     _handleModelEvent(updateType, data) {
-        console.log(updateType, data);
+        switch (updateType) {
+            case UpdateType.PATCH:
+                // - обновляем часть списка
+                this._pointPresenter[data.id].init(data);
+                break;
+            case UpdateType.MINOR:
+                //обновить список
+                this._clearPointList();
+                this._renderBord();
+                break;
+            case UpdateType.MAJOR:
+                //обновить всю доску
+                this._clearBord({})
+                break;
+        }
     }
 
     _handlePointMode(){
@@ -68,28 +82,19 @@ export default class Trip {
     }
 
     _renderSort() {
-        render(this._boardContainer, this._sortComponent);
+        if(this._sortComponent !== null){
+            this._sortComponent = null;
+        }
+
+        this._sortComponent = new TripSortTemplate(this._currentSortType);
         this._sortComponent.setSortClickHandler(this._handleSortTypeChange);
+        render(this._boardContainer, this._sortComponent);
     }
 
     _renderPoint(point) {
         const pointPresenter = new Point(this._tripComponent, this._handleViewAction, this._handlePointMode);
         pointPresenter.init(point);
         this._pointPresenter[point.id] = pointPresenter;
-    }
-
-    _clearPointList() {
-        Object
-        .values(this._pointPresenter)
-        .forEach((presenter) => presenter.destroy());
-        this.pointPresenter = {};
-        this._renderedPointCount = COUNT_POINT;
-    }
-
-    _renderPointList() {
-        const pointCount = this._getPoints().length;
-        const points = this._getPoints().slice(0, Math.min(pointCount, COUNT_POINT)) 
-        this._renderPoints(points);
     }
 
     _renderPoints(points) {
@@ -101,12 +106,18 @@ export default class Trip {
     }
 
     _renderBord() {
-        if(this._getPoints().every((point) => point.length === 0)){
+        const points = this._getPoints();
+        const pointCount =points.length;
+
+        if(pointCount === 0){
             return this._renderNoPoint();
         }
         this._renderSort();
         this._renderTrip();
-        this._renderPointList();
+        //this._renderPointList();
+
+        this._renderPoints(points.slice(0, Math.min(pointCount, this._renderedPointCount)));
+
     }
 
     _sortPoints(sortType) {
@@ -135,5 +146,27 @@ export default class Trip {
         this._sortPoints(sortType);
         this._clearPointList();
         this._renderPointList();
+    }
+
+    _clearBord({resetRernderedPointCount = false, resetSortType = false} = {}){
+        const pointCount = this._getPoints().length;
+
+        Object
+            .values(this._pointPresenter)
+            .forEach((presenter) => presenter.destroy());
+        this._pointPresenter = {};
+
+        remove(this._sortComponent);
+        remove(this._renderNoPoint);
+
+        if(resetRernderedPointCount){
+            this._renderedPointCount = COUNT_POINT;
+        } else {
+            this._renderedPointCount = Math.min(pointCount, this._renderedPointCount);
+        }
+
+        if(resetSortType){
+            this._currentSortType = SortType.DAY;
+        }
     }
 }

@@ -85,7 +85,7 @@ export const createEditPointTemplate = (array) => {
         </div>
 
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-        <button class="event__reset-btn" type="reset">Delete</button>
+        <button class="event__reset-btn" type="button">Delete</button>
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
@@ -132,6 +132,7 @@ export default class EditPointTemplate extends SmartView {
 
     this._clickEditHandler = this._clickEditHandler.bind(this);
     this._formSubmintHandler = this._formSubmintHandler.bind(this);
+    this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._onPointTypeChange = this._onPointTypeChange.bind(this);
     this._onPointInput = this._onPointInput.bind(this);
     this._dueDateStartChangeHandler = this._dueDateStartChangeHandler.bind(this);
@@ -179,6 +180,16 @@ export default class EditPointTemplate extends SmartView {
     this.getElement().querySelector('form').addEventListener('submit',this._clickEditHandler);
   }
 
+  _formDeleteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(EditPointTemplate.parseDataToState(this._date));
+  }
+
+  setDeleteClickHandle(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector('.event__reset-btn').addEventListener('click', this._formDeleteClickHandler);
+  }
+
   resetInput(date) {
     this.updateData(EditPointTemplate.parseDataToState(date));
   }
@@ -189,6 +200,7 @@ export default class EditPointTemplate extends SmartView {
     this._setDataEndpicker();
     this.setClickEditHandler(this._callback.click);
     this.setFormSubmintHandler(this._callback.formSubmit);
+    this.setDeleteClickHandle(this._callback.deleteClick);
   }
 
   _setInnerLesteners() {
